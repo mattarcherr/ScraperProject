@@ -1,4 +1,5 @@
 QT += quick
+CONFIG += qml_debug
 
 SOURCES += \
         main.cpp
