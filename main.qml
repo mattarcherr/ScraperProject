@@ -5,7 +5,7 @@ Window {
     width: 640
     height: 480
     visible: true
-    title: qsTr("Hello World")
+    title: qsTr("Scraper Project")
 
 
     ListModel { id: targetsListModel }
@@ -30,18 +30,22 @@ Window {
         }
 
         Text {
-            id: _text
+            id: targetsText
             text: qsTr("Targets")
             font.pixelSize: 16
             font.family: "Verdana"
 
             topPadding: 10
-            leftPadding: 10
+            leftPadding: 20
         }
 
         Button {
-            x: 8
-            y: 45
+            id: addNewButton
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            anchors.top: targetsText.bottom
+            anchors.topMargin: 20
+
             height: 30
             width: 160
 
@@ -52,58 +56,90 @@ Window {
             onClicked: {
                 console.debug("Debug")
 
-                addEntry()
+                popup.open()
             }
         }
 
 
         Rectangle {
             color: "transparent"
-            anchors.centerIn: parent
-            width: 300
+            border.color: "red"
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            anchors.top: addNewButton.bottom
+            anchors.topMargin: 20
+            width: 250
             height: 300
 
             Component {
                 id: targetDelegate
                 Item {
-                    width: 180; height: 40
-                    Column {
-                        Text { text: title }
-                        Text { text: link; elide: Text.ElideRight; clip:true }
-                    }
-                    MouseArea{
+                    width: parent.width; height: 40
+
+                    Rectangle {
                         anchors.fill: parent
+                        color: "transparent"
+                        border.color: "green"
+
+                        Text {
+                            anchors.fill: parent
+                            text: title;
+                            horizontalAlignment: Text.AlignHCenter
+                        }
+                    }
+
+
+                    MouseArea {
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        onEntered: cursorShape = Qt.PointingHandCursor
                     }
                 }
             }
 
             ListView {
                 anchors.fill: parent;
-                orientation: ListView.Vertical;
-                // delegate: Rectangle {
-                //     width: parent.width;
-                //     height: 100;
-                //     color: bgcolor;
-                // }
                 delegate: targetDelegate
-
                 model: targetsListModel
+                spacing: 20
+            }
+        }
 
-            // }
+        Popup {
+            id: popup
+            anchors.centerIn: parent
 
-                highlight: Rectangle { color: "lightsteelblue"; }
-                focus: true
+            width: parent.width / 2
+            height: parent.height / 1.3
+            modal: true
+            focus: true
+            dim: true
+
+            contentItem: Rectangle {
+                anchors.fill: parent
+                color: "transparent"
+                border.color: "red"
+
+                TextEdit {
+                    anchors.centerIn: parent
+                }
+            }
+
+            closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+
+            onClosed: {
+                addEntry("test")
             }
         }
     }
 
     Component.onCompleted: {
-        addEntry();
+        addEntry("avsd");
     }
 
-    function addEntry(){
+    function addEntry(title){
          console.log("start");
-        var obj = {bgcolor: "red"}
+        var obj = {title: title}
         targetsListModel.append(obj)
         console.log("finish");
     }
