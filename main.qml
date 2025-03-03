@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls 2.15
+import QtQuick.Layouts
 
 Window {
     width: 640
@@ -109,8 +110,8 @@ Window {
             id: popup
             anchors.centerIn: parent
 
-            width: parent.width / 2
-            height: parent.height / 1.3
+            width: 250
+            height: 250
             modal: true
             focus: true
             dim: true
@@ -120,8 +121,40 @@ Window {
                 color: "transparent"
                 border.color: "red"
 
-                TextEdit {
-                    anchors.centerIn: parent
+
+                ColumnLayout {
+                    spacing: 2
+                    anchors.fill: parent
+                    Label {
+                        Layout.alignment: Qt.AlignCenter
+                        text: "Target Label"
+                    }
+                    TextArea {
+                        id: targetLabelTextArea
+                        Layout.alignment: Qt.AlignCenter
+                        Layout.preferredWidth: 100
+                    }
+                    Label {
+                        Layout.alignment: Qt.AlignCenter
+                        text: "Target URL"
+                    }
+                    TextArea {
+                        Layout.alignment: Qt.AlignCenter
+                        Layout.preferredWidth: 100
+                    }
+
+                    Button {
+                        Layout.alignment: Qt.AlignCenter
+                        Layout.preferredWidth: parent.width
+                        Layout.preferredHeight: 50
+                        anchors.bottom: parent.bottom
+
+                        text: "Add Target"
+
+                        onClicked: {
+                            addEntry(targetLabelTextArea.text)
+                        }
+                    }
                 }
             }
 
