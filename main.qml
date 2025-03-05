@@ -89,7 +89,6 @@ Window {
                         }
                     }
 
-
                     MouseArea {
                         anchors.fill: parent
                         hoverEnabled: true
@@ -103,6 +102,29 @@ Window {
                 delegate: targetDelegate
                 model: targetsListModel
                 spacing: 20
+            }
+        }
+
+        Rectangle {
+            // When an item is highlighted display info and delete button
+            width: 250
+            height: 300
+            anchors.right: parent.right
+            anchors.rightMargin: 20
+            anchors.top: addNewButton.bottom
+            anchors.topMargin: 20
+            Text {
+                text: "Info Window"
+                anchors.horizontalCenter: parent.horizontalCenter
+                font.pointSize: 12
+            }
+
+            Button {
+                width: parent.width
+                height: 40
+                text: "Delete Target"
+                enabled: false
+                anchors.bottom: parent.bottom
             }
         }
 
@@ -135,6 +157,7 @@ Window {
                         Layout.preferredWidth: 100
                     }
                     Label {
+                        id: targetURLTextArea
                         Layout.alignment: Qt.AlignCenter
                         text: "Target URL"
                     }
@@ -152,7 +175,10 @@ Window {
                         text: "Add Target"
 
                         onClicked: {
+                            if (targetLabelTextArea.text === "" ) return
+                            if (targetURLTextArea.text === "" ) return
                             addEntry(targetLabelTextArea.text)
+                            popup.close()
                         }
                     }
                 }
@@ -161,7 +187,6 @@ Window {
             closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
             onClosed: {
-                addEntry("test")
             }
         }
     }
